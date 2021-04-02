@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\SiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +20,14 @@ Route::get('/', function () {
 Route::group([
     'as' => 'panel.',
     'middleware' => 'auth',
-    'prefix' => 'panel'
+    'prefix' => 'panel',
 ], function () {
     Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::resource('sites', SiteController::class);
+
 });
 
 require __DIR__.'/auth.php';
