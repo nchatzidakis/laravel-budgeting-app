@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Helpers\CacheNameHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Site;
 use Illuminate\Contracts\View\View;
@@ -36,18 +37,20 @@ class SiteController extends Controller
             'name' => 'required',
         ]);
         $site = \Auth::user()->sites()->create(request()->all());
-        \Cache::forget('header-navigation-sites');
+        \Cache::forget(CacheNameHelper::getHeaderNavigationSites());
         return redirect()->route('panel.sites.show', $site->uuid);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Site  $site
-     * @return \Illuminate\Http\Response
+     * @param  Site  $site
+     * @return RedirectResponse
      */
-    public function show(Site $site)
+    public function show(Site $site): RedirectResponse
     {
+        session([CacheNameHelper::getCurrentSite() => $site->id]);
+        return redirect()->route('panel.sites.index');
     }
 
     /**
@@ -73,7 +76,7 @@ class SiteController extends Controller
             'name' => 'required',
         ]);
         $site->update(request()->all());
-        \Cache::forget('header-navigation-sites');
+        \Cache::forget(CacheNameHelper::getHeaderNavigationSites());
         return redirect()->route('panel.sites.show', $site->uuid);
     }
 
@@ -86,7 +89,7 @@ class SiteController extends Controller
     public function destroy(Site $site): RedirectResponse
     {
         $site->delete();
-        \Cache::forget('header-navigation-sites');
+        \Cache::forget(CacheNameHelper::getHeaderNavigationSites());
         return redirect()->route('panel.sites.index');
     }
 }

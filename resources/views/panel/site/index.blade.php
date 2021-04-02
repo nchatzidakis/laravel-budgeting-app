@@ -16,7 +16,7 @@
     <div class="row">
         @foreach ($sites as $site)
             <div class="col-sm-6 col-md-2">
-                <div class="card">
+                <div class="card @if ($site->id === session(\App\Helpers\CacheNameHelper::getCurrentSite())) card-accent-info @endif">
                     <div class="card-body">
                         <div class="text-muted mb-2 font-2xl">
                             {{ $site->name }}

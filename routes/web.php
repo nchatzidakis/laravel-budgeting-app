@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\ExpenseController;
 use App\Http\Controllers\Panel\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 Route::group([
     'as' => 'panel.',
@@ -28,6 +29,8 @@ Route::group([
 
     Route::resource('sites', SiteController::class);
 
+    Route::resource('expenses', ExpenseController::class)
+        ->except(['show']);
 });
 
 require __DIR__.'/auth.php';

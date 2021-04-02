@@ -51,7 +51,8 @@
             <ul class="c-header-nav d-md-down-none">
                 @foreach ($header['navigation']['sites'] ?? [] as $site)
                     <li class="c-header-nav-item px-3">
-                        <a href="{{ route('panel.sites.show', $site->uuid) }}" class="c-header-nav-link">
+                        <a href="{{ route('panel.sites.show', $site->uuid) }}"
+                           class="c-header-nav-link @if ($site->id === session(\App\Helpers\CacheNameHelper::getCurrentSite())) btn btn-outline-info @endif">
                             {{ $site->name }}
                         </a>
                     </li>

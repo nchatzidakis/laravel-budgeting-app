@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Helpers\CacheNameHelper;
 use App\Models\Site;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -16,7 +17,7 @@ class AppLayout extends Component
         $with = [
             'header' => [
                 'navigation' => [
-                    'sites' => \Cache::remember('header-navigation-sites', 7200, function () {
+                    'sites' => \Cache::remember(CacheNameHelper::getHeaderNavigationSites(), 7200, function () {
                         return Site::all();
                     }),
                 ],
