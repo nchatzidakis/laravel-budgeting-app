@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Site;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
@@ -53,6 +52,8 @@ class SiteController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * @param  Site  $site
+     * @return View
      */
     public function edit(Site $site): View
     {
@@ -63,6 +64,8 @@ class SiteController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @param  Site  $site
+     * @return RedirectResponse
      */
     public function update(Site $site): RedirectResponse
     {
@@ -76,6 +79,9 @@ class SiteController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param  Site  $site
+     * @return RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Site $site): RedirectResponse
     {

@@ -30,15 +30,6 @@
             </div>
             <div class="card-body">
                 {!! Form::model($site, ['route' => ['panel.sites.update', $site->uuid], 'method' => 'PUT']) !!}
-                @if ($errors->any())
-                    <div class="bg-red-100 text-sm p-3 mb-4">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 @include('panel.site.form')
                 {!! Form::submit(__('Save'), ['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}
