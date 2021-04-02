@@ -37,6 +37,7 @@ class SiteController extends Controller
             'name' => 'required',
         ]);
         $site = \Auth::user()->sites()->create(request()->all());
+        \Cache::forget('header-navigation-sites');
         return redirect()->route('panel.sites.show', $site->uuid);
     }
 
@@ -48,7 +49,6 @@ class SiteController extends Controller
      */
     public function show(Site $site)
     {
-        //
     }
 
     /**
@@ -70,6 +70,7 @@ class SiteController extends Controller
             'name' => 'required',
         ]);
         $site->update(request()->all());
+        \Cache::forget('header-navigation-sites');
         return redirect()->route('panel.sites.show', $site->uuid);
     }
 
@@ -79,6 +80,7 @@ class SiteController extends Controller
     public function destroy(Site $site): RedirectResponse
     {
         $site->delete();
+        \Cache::forget('header-navigation-sites');
         return redirect()->route('panel.sites.index');
     }
 }

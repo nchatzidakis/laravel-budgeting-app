@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BelongsToUser;
+use App\Traits\HasCurrentUserScope;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Site extends Model
 {
-    use HasFactory, SoftDeletes, BelongsToUser, HasUuid;
+    use HasFactory, SoftDeletes, BelongsToUser, HasUuid, HasCurrentUserScope;
 
     /**
      * The attributes that aren't mass assignable.

@@ -2,17 +2,27 @@
 
 namespace App\View\Components;
 
+use App\Models\Site;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class AppLayout extends Component
 {
     /**
      * Get the view / contents that represents the component.
-     *
-     * @return \Illuminate\View\View
      */
-    public function render()
+    public function render(): View
     {
-        return view('layouts.app');
+        $with = [
+            'header' => [
+                'navigation' => [
+                    'sites' => \Cache::remember('header-navigation-sites', 7200, function () {
+                        return Site::all();
+                    }),
+                ],
+            ],
+        ];
+
+        return view('layouts.app', $with);
     }
 }
