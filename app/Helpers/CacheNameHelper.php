@@ -13,4 +13,12 @@ class CacheNameHelper
     {
         return 'user-'.\Auth::user()->id.'-header-navigation-sites';
     }
+
+    static function getCategories() : string {
+        return 'user-'.\Auth::user()->id.'-categories';
+    }
+
+    static function getAccounts() : string {
+        return 'user-'.\Auth::user()->id.'-accounts';
+    }
 }

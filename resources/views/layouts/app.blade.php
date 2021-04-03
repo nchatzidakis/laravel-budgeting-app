@@ -15,6 +15,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {{ $styles ?? null }}
 </head>
 <body class="c-app">
     <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
@@ -33,7 +34,12 @@
                 </a>
             </li>
             <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('panel.expenses.create') }}">
+                <a class="c-sidebar-nav-link" href="{{ route('panel.accounts.index') }}">
+                    Accounts
+                </a>
+            </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('panel.expenses.index') }}">
                     Expenses
                 </a>
             </li>
@@ -49,7 +55,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <ul class="c-header-nav d-md-down-none">
-                @foreach ($header['navigation']['sites'] ?? [] as $site)
+                @foreach ($header_navigation['sites'] ?? [] as $site)
                     <li class="c-header-nav-item px-3">
                         <a href="{{ route('panel.sites.show', $site->uuid) }}"
                            class="c-header-nav-link @if ($site->id === session(\App\Helpers\CacheNameHelper::getCurrentSite())) btn btn-outline-info @endif">
@@ -104,5 +110,6 @@
             });
         })
     </script>
+    {{ $scripts ?? null }}
 </body>
 </html>

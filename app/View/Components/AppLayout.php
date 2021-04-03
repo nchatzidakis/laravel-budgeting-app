@@ -15,12 +15,10 @@ class AppLayout extends Component
     public function render(): View
     {
         $with = [
-            'header' => [
-                'navigation' => [
-                    'sites' => \Cache::remember(CacheNameHelper::getHeaderNavigationSites(), 7200, function () {
-                        return Site::all();
-                    }),
-                ],
+            'header_navigation' => [
+                'sites' => \Cache::remember(CacheNameHelper::getHeaderNavigationSites(), 7200, function () {
+                    return Site::all();
+                }),
             ],
         ];
 

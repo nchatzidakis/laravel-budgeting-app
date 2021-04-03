@@ -2,52 +2,71 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Helpers\CacheNameHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Account;
+use App\Models\Category;
 use App\Models\Expense;
+use Cache;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
-    /**
+    /*
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $with = [];
+        return view('panel.expense.index', $with);
     }
 
-    /**
+    /*
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
-        return view('panel.expense.form');
+        $with = [
+            'categories' => Cache::remember(CacheNameHelper::getCategories(), 7200, function () {
+                return Category::with(['children'])
+                    ->whereNull('parent_id')
+                    ->orderBy('name')
+                    ->get();
+            }),
+            'accounts' => Cache::remember(CacheNameHelper::getAccounts(), 7200, function () {
+                return Account::orderBy('name')
+                    ->get();
+            }),
+            'companies' => \Auth::user()
+                ->sites()
+                ->find(session(CacheNameHelper::getCurrentSite()))
+                ->expenses
+                ->unique('company')
+                ->pluck('company'),
+        ];
+
+        return view('panel.expense.create', $with);
     }
 
-    /**
+    /*
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Expense $expense)
-    {
-        //
+        request()->validate([
+            'category_id' => 'required|exists:categories,id',
+            'paid_from' => 'required|exists:accounts,id',
+            'amount' => 'numeric',
+            'transaction_at' => 'required|date_format:Y-m-d',
+            'due_at' => 'nullable|date_format:Y-m-d',
+        ]);
+        \Auth::user()
+            ->sites()
+            ->find(session(CacheNameHelper::getCurrentSite()))
+            ->expenses()
+            ->create(request()->all() + ['user_id' => \Auth::user()->id]);
+        return redirect()->route('panel.expenses.index');
     }
 
     /**

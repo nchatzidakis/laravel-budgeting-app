@@ -50,6 +50,7 @@ class SiteController extends Controller
     public function show(Site $site): RedirectResponse
     {
         session([CacheNameHelper::getCurrentSite() => $site->id]);
+        \Cache::forget(CacheNameHelper::getCategories());
         return redirect()->route('panel.sites.index');
     }
 
@@ -65,10 +66,8 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
+    /*
      * Update the specified resource in storage.
-     * @param  Site  $site
-     * @return RedirectResponse
      */
     public function update(Site $site): RedirectResponse
     {
@@ -80,11 +79,8 @@ class SiteController extends Controller
         return redirect()->route('panel.sites.show', $site->uuid);
     }
 
-    /**
+    /*
      * Remove the specified resource from storage.
-     * @param  Site  $site
-     * @return RedirectResponse
-     * @throws \Exception
      */
     public function destroy(Site $site): RedirectResponse
     {

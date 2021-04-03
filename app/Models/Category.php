@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\BelongsToSite;
 use App\Traits\BelongsToUser;
+use App\Traits\HasCurrentUserScope;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes, BelongsToSite, BelongsToUser, HasUuid;
+    use HasFactory, SoftDeletes, BelongsToSite, BelongsToUser, HasUuid, HasCurrentUserScope;
 
     /**
      * The attributes that aren't mass assignable.
@@ -25,7 +26,7 @@ class Category extends Model
      */
     function children(): HasMany
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     /**

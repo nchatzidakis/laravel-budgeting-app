@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\AccountController;
 use App\Http\Controllers\Panel\ExpenseController;
 use App\Http\Controllers\Panel\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
 Route::group([
     'as' => 'panel.',
     'middleware' => 'auth',
@@ -31,6 +33,24 @@ Route::group([
 
     Route::resource('expenses', ExpenseController::class)
         ->except(['show']);
+
+    Route::resource('accounts', AccountController::class);
+});
+
+Route::group([
+    'as' => 'datatables.',
+    'middleware' => 'auth',
+    'prefix' => 'datatables',
+], function () {
+
+    Route::group([
+        'as' => 'panel.',
+        'prefix' => 'panel',
+    ], function () {
+        Route::get('expenses/default', [\App\Http\Controllers\Datatables\Panel\ExpenseController::class, 'default'])
+            ->name('expenses.default');
+    });
+
 });
 
 require __DIR__.'/auth.php';

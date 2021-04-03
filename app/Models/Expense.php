@@ -32,6 +32,6 @@ class Expense extends Model
      */
     function paidFrom(): BelongsTo
     {
-        return $this->belongsTo(Account::class, 'paid_to');
+        return $this->belongsTo(Account::class, 'paid_from');
     }
 }
